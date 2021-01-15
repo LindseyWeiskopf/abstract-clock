@@ -1,40 +1,46 @@
-let color_ramp = [];
-let  minute_xs  = [];
-let minute_ys = [];
+let  second_xs  = [];
+let second_ys = [];
 
 function setup() {
   createCanvas(800, 600);
-  let from = color(247, 204, 158, 150);
-  let to = color(176, 14, 141, 150);
-  for (let i = 0; i < 60; i++) {
-    append(color_ramp, lerpColor(from, to, i/60));
+    for (let i = 0; i < 60; i++) {
+    append(second_xs, random(800));
+    append(second_ys, random(600));
   }
-  for (let i = 0; i < 60; i++) {
-    append(minute_xs, random(800));
-    append(minute_ys, random(600));
-  }
-
 }
 
 function draw() {
-  background(220);
+  colorMode(HSB);
+  background(6, 0, 95);
   frameRate(1);
+  if(second() === 1) {
+		console.log(minute());
+  }
 
-  noStroke();
-  fill(240, 240, 161, 150);
-  arc(400, 300, 400, 400, 0, hour()*2/24*PI);
+  fill(6, 0, 95);
+  strokeWeight(10);
+
+  for (let i = 0; i < hour(); i++) {
+    let colorMap = map(i, 0, 24, 0, 330, true);
+    let arc_map_width = map(i, 0, 24, 800, 20, true);
+    let arc_map_height = map(i, 0,24, 1200, 20, true);
+    stroke(colorMap, 56, 65);
+    arc(400, 600, arc_map_width, arc_map_height, PI, 2*PI);
+  }
+
+  let minute_map = map(minute(), 0, 60, PI, 2*PI);
+  let new_arc_map_width = map(hour(), 0, 24, 800, 20, true);
+  let new_arc_map_height = map(hour(), 0, 24, 1200, 20, true);
+  let colorMap = map(hour(), 0, 24, 0, 330, true);
+  stroke(colorMap, 56, 65);
+  arc(400, 600, new_arc_map_width, new_arc_map_height, PI, minute_map);
 
 
   for (let i = 0; i < second(); i++) {
-    stroke(152, 180, 217, 150);
-    line(random(50, 750), random(50, 550), random(50, 750), random(50, 550));
-  }
-
-  for (let i = 0; i < minute(); i++) {
-    fill(color_ramp[i]);
+    colorMode(RGB);
     noStroke();
-    ellipse(minute_xs[i], minute_ys[i], 50)
+    fill(255,255,255,150);
+    ellipse(second_xs[i], second_ys[i], 30);
   }
-
 
 }
